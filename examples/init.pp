@@ -15,7 +15,8 @@ group { $want_group:
 }
 
 file { ["/somedir", "/shared"]:
-  ensure => directory 
+  ensure => directory,
+}
 
 file { $dirs:
   ensure => directory,
