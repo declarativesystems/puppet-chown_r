@@ -14,70 +14,58 @@
 
 ## Description
 
-Start with a one- or two-sentence summary of what the module does and/or what
-problem it solves. This is your 30-second elevator pitch for your module.
-Consider including OS/Puppet version it works with.
+This module provides a handy way to run the `chown -R` command to perform bulk directory ownership/group changes where required.
 
-You can give more descriptive information in a second paragraph. This paragraph
-should answer the questions: "What does this module *do*?" and "Why would I use
-it?" If your module has a range of functionality (installation, configuration,
-management, etc.), this is the time to mention it.
+While the equivalent result is also possible using a `file` resource in recursive mode, doing so can create a huge number of resources, placing an unnecessary load on the Puppet Master.
 
-## Setup
+This module achieves the same result at the cost of reduced change reporting granularity:  A  maximum of one change per resource will ever be reported no matter how many underlying files need to have their ownership fixed.  This is inline with the default behavior of the underlying `chown` system command.
 
-### What chown_r affects **OPTIONAL**
-
-If it's obvious what your module touches, you can skip this section. For
-example, folks can probably figure out that your mysql_instance module affects
-their MySQL instances.
-
-If there's more that they should know about, though, this is the place to mention:
-
-* A list of files, packages, services, or operations that the module will alter,
-  impact, or execute.
-* Dependencies that your module automatically installs.
-* Warnings or other important notices.
-
-### Setup Requirements **OPTIONAL**
-
-If your module requires anything extra before setting up (pluginsync enabled,
-etc.), mention it here.
-
-If your most recent release breaks compatibility or requires particular steps
-for upgrading, you might want to include an additional "Upgrading" section
-here.
-
-### Beginning with chown_r
-
-The very basic steps needed for a user to get the module up and running. This
-can include setup steps, if necessary, or it can be an example of the most
-basic use of the module.
 
 ## Usage
+### Notes
+* Directories referred to must already exist on the system
+* If creating these directories with Puppet, you should not specify owner or group information as this could conflict with the changes made by this module
+* Any groups and users required must be declared
+* You can pass an array of directories to check and fix recursively for permissions to save typing as long as the `want_user` and `want_group` fields are identical
+* Both `want_user` and `want_group` are mandatory parameters
 
-This section is where you describe how to customize, configure, and do the
-fancy stuff with your module here. It's especially helpful if you include usage
-examples and code samples for doing things with your module.
+### Check permissions every puppet run
+If your happy for Puppet to update and fix permissions as required, the following code would ensure that `/foo` and all its children are owned by user `foo` and group `foo`:
+```puppet
+chown_r { "/foo":
+  want_user   => "foo",
+  want_group  => "foo",
+}
+```
+
+### Check permissions when watched resource changes
+If your only ever want to perform fixes in response to a Package update AND observed incorrect ownership, the following code would ensure all `/bar` and all its children will be set to owner `bar`, group `bar` if required after a change to the `foobar` package.  If the package is unchanged, then ownership will not be checked/fixed.
+```puppet
+chown_r { "/bar":
+  want_user   => "bar",
+  want_group  => "bar",
+  watch       => Package["foobar"],
+}
+```
+
+### Checking and fixing permissions on several directories at once
+If you have several directories to check/fix, you can use Puppet's built in array syntax as follows to reduce the amount of typing needed.  You may also specify a resource to watch for changes as desired.
+```puppet
+chown_r { ["/somedir/appdir-1.2.3", "/shared/conf/", "/shared/data/", "/shared/log"]:
+  want_user   => "app",
+  want_group  => "app",
+}
+```
 
 ## Reference
 
-Here, include a complete list of your module's classes, types, providers,
-facts, along with the parameters for each. Users refer to this section (thus
-the name "Reference") to find specific details; most users don't read it per
-se.
+* `chown_r` -- Defined resource type providing `chmod -R`-like capabilities
 
 ## Limitations
-
-This is where you list OS compatibility, version compatibility, etc. If there
-are Known Issues, you might want to include them under their own heading here.
+* Only works on Unix-like OS's
+* It's possible to write code that will result in race conditions using this module, please test your code thoroughly
+* Both `want_user` and `want_group` must be set at the time of use
+* Overlapping `chown_r` resources are not detected by the module and must be avoided by the user
 
 ## Development
-
-Since your module is awesome, other users will want to play with it. Let them
-know what the ground rules for contributing are.
-
-## Release Notes/Contributors/Etc. **Optional**
-
-If you aren't using changelog, put your release notes here (though you should
-consider using changelog). You can also add any additional sections you feel
-are necessary or important to include here. Please use the `## ` header.
+Pull Requests accepted
