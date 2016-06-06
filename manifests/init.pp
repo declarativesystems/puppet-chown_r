@@ -31,7 +31,7 @@ if $watch {
   $_watch       = $watch
 } else {
   $refreshonly  = false
-  $_watch       = false
+  $_watch       = undef
 }
 
 # change ownership if find matches any files or directories with different
