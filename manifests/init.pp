@@ -36,15 +36,44 @@ if $watch {
 
 # change ownership if find matches any files or directories with different
 # ownership to $want_user or $want_group
-exec { "chown -R for ${dir}":
-  command     => "chown -R ${want_user}:${want_group} ${dir}",
-  refreshonly => $refreshonly,
-  onlyif      => "find ${dir} \\( -not -user ${want_user} -or -not -group ${want_group} \\) | grep .",
-  subscribe   => $_watch,
-  path        => [
-    "/bin",
-    "/usr/bin",
-  ],
+
+if $want_user and $want_group {
+  exec { "chown -R for ${dir}":
+    command     => "chown -R ${want_user}:${want_group} ${dir}",
+    refreshonly => $refreshonly,
+    onlyif      => "find ${dir} \\( -not -user ${want_user} -or -not -group ${want_group} \\) | grep .",
+    subscribe   => $_watch,
+    path        => [
+      "/bin",
+      "/usr/bin",
+    ],
+  }
+}
+
+if $want_user and (! $want_group) {
+  exec { "chown -R for ${dir}":
+    command     => "chown -R ${want_user} ${dir}",
+    refreshonly => $refreshonly,
+    onlyif      => "find ${dir} \\( -not -user ${want_user} \\) | grep .",
+    subscribe   => $_watch,
+    path        => [
+      "/bin",
+      "/usr/bin",
+    ],
+  }
+}
+
+if (! $want_user) and $want_group {
+  exec { "chgrp -R for ${dir}":
+    command     => "chgrp -R ${want_group} ${dir}",
+    refreshonly => $refreshonly,
+    onlyif      => "find ${dir} \\( -not -group ${want_group} \\) | grep .",
+    subscribe   => $_watch,
+    path        => [
+      "/bin",
+      "/usr/bin",
+    ],
+  }
 }
 
 }
