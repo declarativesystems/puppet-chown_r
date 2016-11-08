@@ -1,6 +1,6 @@
 {
   "name": "geoffwilliams-chown_r",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": "geoffwilliams",
   "summary": "chown -R files you need to",
   "license": "Apache-2.0",
