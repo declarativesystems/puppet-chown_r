@@ -64,7 +64,6 @@ chown_r { ["/somedir/appdir-1.2.3", "/shared/conf/", "/shared/data/", "/shared/l
 ## Limitations
 * Only works on Unix-like OS's
 * It's possible to write code that will result in race conditions using this module, please test your code thoroughly
-* Both `want_user` and `want_group` must be set at the time of use
 * Overlapping `chown_r` resources are not detected by the module and must be avoided by the user
 * This module is not supported by Puppet
 
