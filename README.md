@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/GeoffWilliams/puppet-chown_r.svg?branch=master)](https://travis-ci.org/GeoffWilliams/puppet-chown_r)
 # chown_r
 
 #### Table of Contents

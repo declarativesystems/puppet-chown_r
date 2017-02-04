@@ -1,9 +1,9 @@
 # chown_r
-# Defined Resource Type to carry out chown -R when required.  This avoids 
-# having to use recursive `file` resources with large directories as this 
+# Defined Resource Type to carry out chown -R when required.  This avoids
+# having to use recursive `file` resources with large directories as this
 # can bring about poor performance in the Puppet Master as well as placing
 # high demand on storage requirements
-# 
+#
 #
 # Params
 # ======
@@ -26,54 +26,60 @@ define chown_r(
   $watch = false,
 ) {
 
-if $watch {
-  $refreshonly  = true
-  $_watch       = $watch
-} else {
-  $refreshonly  = false
-  $_watch       = undef
-}
-
-# change ownership if find matches any files or directories with different
-# ownership to $want_user or $want_group
-
-if $want_user and $want_group {
-  exec { "chown -R for ${dir}":
-    command     => "chown -R ${want_user}:${want_group} ${dir}",
-    refreshonly => $refreshonly,
-    onlyif      => "find ${dir} \\( -not -user ${want_user} -or -not -group ${want_group} \\) | grep .",
-    subscribe   => $_watch,
-    path        => [
-      "/bin",
-      "/usr/bin",
-    ],
+  if $watch {
+    $refreshonly  = true
+    $_watch       = $watch
+  } else {
+    $refreshonly  = false
+    $_watch       = undef
   }
-}
 
-if $want_user and (! $want_group) {
-  exec { "chown -R for ${dir}":
-    command     => "chown -R ${want_user} ${dir}",
-    refreshonly => $refreshonly,
-    onlyif      => "find ${dir} \\( -not -user ${want_user} \\) | grep .",
-    subscribe   => $_watch,
-    path        => [
-      "/bin",
-      "/usr/bin",
-    ],
+  # must use '!' instead of -not on solaris or we get a bad command error
+  if $facts['os']['family'] == 'Solaris' {
+    $predicate = '!'
+  } else {
+    $predicate = '-not'
   }
-}
 
-if (! $want_user) and $want_group {
-  exec { "chgrp -R for ${dir}":
-    command     => "chgrp -R ${want_group} ${dir}",
-    refreshonly => $refreshonly,
-    onlyif      => "find ${dir} \\( -not -group ${want_group} \\) | grep .",
-    subscribe   => $_watch,
-    path        => [
-      "/bin",
-      "/usr/bin",
-    ],
+  # change ownership if find matches any files or directories with different
+  # ownership to $want_user or $want_group
+
+  if $want_user and $want_group {
+    exec { "chown -R for ${dir}":
+      command     => "chown -R ${want_user}:${want_group} ${dir}",
+      refreshonly => $refreshonly,
+      onlyif      => "find ${dir} \\( ${predicate} -user ${want_user} -or ${predicate} -group ${want_group} \\) | grep .",
+      subscribe   => $_watch,
+      path        => [
+        "/bin",
+        "/usr/bin",
+      ],
+    }
   }
-}
 
+  if $want_user and (! $want_group) {
+    exec { "chown -R for ${dir}":
+      command     => "chown -R ${want_user} ${dir}",
+      refreshonly => $refreshonly,
+      onlyif      => "find ${dir} \\( ${predicate} -user ${want_user} \\) | grep .",
+      subscribe   => $_watch,
+      path        => [
+        "/bin",
+        "/usr/bin",
+      ],
+    }
+  }
+
+  if (! $want_user) and $want_group {
+    exec { "chgrp -R for ${dir}":
+      command     => "chgrp -R ${want_group} ${dir}",
+      refreshonly => $refreshonly,
+      onlyif      => "find ${dir} \\( ${predicate} -group ${want_group} \\) | grep .",
+      subscribe   => $_watch,
+      path        => [
+        "/bin",
+        "/usr/bin",
+      ],
+    }
+  }
 }

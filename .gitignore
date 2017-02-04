@@ -1,1 +1,6 @@
-pkg
+/spec/fixtures
+Gemfile.lock
+Puppetfile.lock
+.librarian
+.tmp
+/pkg
