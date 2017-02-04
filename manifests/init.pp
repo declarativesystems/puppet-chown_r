@@ -36,9 +36,11 @@ define chown_r(
 
   # must use '!' instead of -not on solaris or we get a bad command error
   if $facts['os']['family'] == 'Solaris' {
-    $predicate = '!'
+    $not_pred  = '!'
+    $or_pred   = '-o'
   } else {
-    $predicate = '-not'
+    $not_pred  = '-not'
+    $or_pred   = '-or'
   }
 
   # change ownership if find matches any files or directories with different
@@ -48,7 +50,7 @@ define chown_r(
     exec { "chown -R for ${dir}":
       command     => "chown -R ${want_user}:${want_group} ${dir}",
       refreshonly => $refreshonly,
-      onlyif      => "find ${dir} \\( ${predicate} -user ${want_user} -or ${predicate} -group ${want_group} \\) | grep .",
+      onlyif      => "find ${dir} \\( ${not_pred} -user ${want_user} ${or_pred} ${not_pred} -group ${want_group} \\) | grep .",
       subscribe   => $_watch,
       path        => [
         "/bin",
@@ -61,7 +63,7 @@ define chown_r(
     exec { "chown -R for ${dir}":
       command     => "chown -R ${want_user} ${dir}",
       refreshonly => $refreshonly,
-      onlyif      => "find ${dir} \\( ${predicate} -user ${want_user} \\) | grep .",
+      onlyif      => "find ${dir} \\( ${not_pred} -user ${want_user} \\) | grep .",
       subscribe   => $_watch,
       path        => [
         "/bin",
@@ -74,7 +76,7 @@ define chown_r(
     exec { "chgrp -R for ${dir}":
       command     => "chgrp -R ${want_group} ${dir}",
       refreshonly => $refreshonly,
-      onlyif      => "find ${dir} \\( ${predicate} -group ${want_group} \\) | grep .",
+      onlyif      => "find ${dir} \\( ${not_pred} -group ${want_group} \\) | grep .",
       subscribe   => $_watch,
       path        => [
         "/bin",

@@ -4,3 +4,4 @@ Puppetfile.lock
 .librarian
 .tmp
 /pkg
+.DS_Store
