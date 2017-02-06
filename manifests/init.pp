@@ -19,11 +19,14 @@
 #     files with incorrect ownership.  Note that if this parameter is not set,
 #     the chown command will run every time find tells us we need to (eg
 #     every puppet run)
+# @param skip Do not include this directory when running chmod
+
 define chown_r(
   $want_user,
   $want_group,
-  $dir = $name,
+  $dir   = $name,
   $watch = false,
+  $skip  = false,
 ) {
 
   if $watch {
@@ -43,45 +46,48 @@ define chown_r(
     $or_pred   = '-or'
   }
 
-  # change ownership if find matches any files or directories with different
-  # ownership to $want_user or $want_group
+  if $skip {
+    $_skip = "-wholename ${skip} -prune -o"
+  } else {
+    $_skip = ""
+  }
+
+  if $want_user {
+    $_want_user = "${not_pred} -user ${want_user}"
+  } else {
+    $_want_user = ""
+  }
+
+  if $want_group {
+    $_want_group = "${not_pred} -group ${want_group}"
+  } else {
+    $_want_group = ""
+  }
 
   if $want_user and $want_group {
-    exec { "chown -R for ${dir}":
-      command     => "chown -R ${want_user}:${want_group} ${dir}",
-      refreshonly => $refreshonly,
-      onlyif      => "find ${dir} \\( ${not_pred} -user ${want_user} ${or_pred} ${not_pred} -group ${want_group} \\) | grep .",
-      subscribe   => $_watch,
-      path        => [
-        "/bin",
-        "/usr/bin",
-      ],
-    }
+    $want_both = $or_pred
+    $cmd = "chown ${want_user}:${want_group}"
+  } elsif $want_user {
+    $want_both = ""
+    $cmd = "chown ${want_user}"
+  } elsif $want_group {
+    $want_both = ""
+    $cmd = "chgrp ${want_group}"
+  } else {
+    fail("One of want_user or want_group must be specified")
   }
 
-  if $want_user and (! $want_group) {
-    exec { "chown -R for ${dir}":
-      command     => "chown -R ${want_user} ${dir}",
-      refreshonly => $refreshonly,
-      onlyif      => "find ${dir} \\( ${not_pred} -user ${want_user} \\) | grep .",
-      subscribe   => $_watch,
-      path        => [
-        "/bin",
-        "/usr/bin",
-      ],
-    }
+  # change ownership if find matches any files or directories with different
+  # ownership to $want_user or $want_group
+  exec { "chown -R for ${dir}":
+    command     => "find ${dir} ${_skip} -exec ${cmd} {} \\;",
+    refreshonly => $refreshonly,
+    onlyif      => "find ${dir} ${_skip} \\( ${_want_user} ${want_both} ${_want_group} \\) -print | grep .",
+    subscribe   => $_watch,
+    path        => [
+      "/bin",
+      "/usr/bin",
+    ],
   }
 
-  if (! $want_user) and $want_group {
-    exec { "chgrp -R for ${dir}":
-      command     => "chgrp -R ${want_group} ${dir}",
-      refreshonly => $refreshonly,
-      onlyif      => "find ${dir} \\( ${not_pred} -group ${want_group} \\) | grep .",
-      subscribe   => $_watch,
-      path        => [
-        "/bin",
-        "/usr/bin",
-      ],
-    }
-  }
 }
