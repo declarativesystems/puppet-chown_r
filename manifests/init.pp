@@ -1,32 +1,26 @@
-# chown_r
+# @summary recursive chown
+#
 # Defined Resource Type to carry out chown -R when required.  This avoids
 # having to use recursive `file` resources with large directories as this
 # can bring about poor performance in the Puppet Master as well as placing
 # high demand on storage requirements
 #
 #
-# Params
-# ======
-#   [`dir`]
-#     The directory to check and chown.  Defaults to $name
-#   [`want_user`]
-#     The user ID to chown to and check for
-#   [`want_group`]
-#     the group ID to chown to and check for
-#   [`watch`]
-#     Resource reference to watch (eg Package['foo']), if set, we will only
-#     run the chown if this resource sends a refresh event AND we identify
-#     files with incorrect ownership.  Note that if this parameter is not set,
-#     the chown command will run every time find tells us we need to (eg
-#     every puppet run)
+# @param dir The directory to check and chown.  Defaults to $name
+# @param want_user The user ID to chown to and check for
+# @param want_group The group ID to chown to and check for
+# @param watch Resource reference to watch (eg Package['foo']), if set, we will only
+#   run the chown if this resource sends a refresh event AND we identify
+#   files with incorrect ownership.  Note that if this parameter is not set,
+#   the chown command will run every time find tells us we need to (eg
+#   up to every puppet run)
 # @param skip Do not include this directory when running chmod
-
 define chown_r(
-  $want_user,
-  $want_group,
-  $dir   = $name,
-  $watch = false,
-  $skip  = false,
+  Optional[String]                              $want_user    = undef,
+  Optional[String]                              $want_group   = undef,
+  String                                        $dir          = $name,
+  Optional[Variant[Resource, Array[Resource]]]  $watch        = undef,
+  Optional[String]                              $skip         = undef,
 ) {
 
   if $watch {

@@ -5,3 +5,6 @@ Puppetfile.lock
 .tmp
 /pkg
 .DS_Store
+.Puppetfile.pdqtest
+.idea
+.yardoc

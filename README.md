@@ -9,7 +9,6 @@
     * [Setup requirements](#setup-requirements)
     * [Beginning with chown_r](#beginning-with-chown_r)
 1. [Usage - Configuration options and additional functionality](#usage)
-1. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
 1. [Limitations - OS compatibility, etc.](#limitations)
 1. [Development - Guide for contributing to the module](#development)
 
@@ -57,10 +56,6 @@ chown_r { ["/somedir/appdir-1.2.3", "/shared/conf/", "/shared/data/", "/shared/l
   want_group  => "app",
 }
 ```
-
-## Reference
-
-* `chown_r` -- Defined resource type providing `chmod -R`-like capabilities
 
 ## Limitations
 * Only works on Unix-like OS's

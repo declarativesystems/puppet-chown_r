@@ -47,10 +47,18 @@ chown_r { $dirs:
 
 chown_r { "/extra":
   want_user  => $want_user,
-  want_group => false,
 }
 
 chown_r { '/foo':
-  want_user  => false,
   want_group => $want_group,
+}
+
+chown_r { '/bar':
+  want_group => $want_group,
+  watch      => User[$want_user],
+}
+
+chown_r { '/baz':
+  want_group => $want_group,
+  watch      => [User[$want_user], Group[$want_group]],
 }
