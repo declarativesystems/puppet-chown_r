@@ -16,11 +16,11 @@
 #   up to every puppet run)
 # @param skip Do not include this directory when running chmod
 define chown_r(
-  Optional[String]                              $want_user    = undef,
-  Optional[String]                              $want_group   = undef,
-  String                                        $dir          = $name,
-  Optional[Variant[Resource, Array[Resource]]]  $watch        = undef,
-  Optional[String]                              $skip         = undef,
+  Optional[String]                                          $want_user    = undef,
+  Optional[String]                                          $want_group   = undef,
+  String                                                    $dir          = $name,
+  Optional[Variant[Type[Resource], Array[Type[Resource]]]]  $watch        = undef,
+  Optional[String]                                          $skip         = undef,
 ) {
 
   if $watch {

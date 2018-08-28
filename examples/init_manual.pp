@@ -1,3 +1,5 @@
+# @PDQTest
+
 $dirs       = ["/somedir/appdir-1.2.3", "/shared/conf/", "/shared/data/", "/shared/log"]
 $want_user  = "app"
 $want_group = "app"

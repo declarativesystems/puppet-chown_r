@@ -46,7 +46,7 @@ Default value: `undef`
 
 ##### `watch`
 
-Data type: `Optional[Variant[Resource, Array[Resource]]]`
+Data type: `Optional[Variant[Type[Resource], Array[Type[Resource]]]]`
 
 Resource reference to watch (eg Package['foo']), if set, we will only
 run the chown if this resource sends a refresh event AND we identify
