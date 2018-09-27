@@ -15,8 +15,6 @@ before_install:
   - sudo apt install -y pdk
   - make Gemfile.local
   - bundle exec pdqtest setup
-  - # fix for - https://tickets.puppetlabs.com/browse/PDK-1192
-  - find vendor -iname '*.pp' -exec rm {} \;
 script:
   - make
 rvm:
