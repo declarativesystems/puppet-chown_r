@@ -17,6 +17,7 @@ before_install:
   - bundle exec pdqtest setup
   - # fix for - https://tickets.puppetlabs.com/browse/PDK-1192
   - find vendor/ -iname '*.pp' -exec rm {} \;
+  - bundle install --no-deployment
 script:
   - make
 rvm:
