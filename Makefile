@@ -15,6 +15,8 @@ logical: Gemfile.local
 	bundle exec pdqtest rspec
 
 bundle:
+	# First install into PDK world to get hard to find gems
+	pdk bundle install
 	# Install into _normal world_ bundle
 	bundle install
 	# Don't tell PDK
