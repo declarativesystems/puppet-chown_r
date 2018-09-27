@@ -19,10 +19,6 @@ bundle:
 	pdk bundle install
 	# Install into _normal world_ bundle
 	bundle install
-	# Don't tell PDK
-	rm Gemfile.lock
-	# Install into _PDK_ bundle - because we re-bundled
-	pdk bundle install
 
 Gemfile.local:
 	echo "[🐌] Creating symlink and running pdk bundle..."
