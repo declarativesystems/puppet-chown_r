@@ -9,7 +9,11 @@ services:
   - docker
 cache: bundler
 before_install:
-  - bundle install
+  - wget https://apt.puppetlabs.com/puppet5-release-trusty.deb
+  - sudo dpkg -i puppet5-release-trusty.deb
+  - sudo apt-get update
+  - sudo apt install -y pdk
+  - pdk bundle install
   - bundle exec pdqtest setup
 script: "make"
 rvm:
