@@ -1,0 +1,2 @@
+gem 'pdqtest', '~> 1.9.9beta'
+gem 'puppet-strings', :git => 'https://github.com/puppetlabs/puppet-strings'
