@@ -18,7 +18,7 @@ bundle:
 	# First install into PDK world to get hard to find gems
 	pdk bundle install
 	# Install into _normal world_ bundle
-	bundle install
+	bundle install --no-deployment
 
 Gemfile.local:
 	echo "[🐌] Creating symlink and running pdk bundle..."
