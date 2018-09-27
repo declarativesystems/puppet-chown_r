@@ -13,8 +13,9 @@ before_install:
   - sudo dpkg -i puppet5-release-trusty.deb
   - sudo apt-get update
   - sudo apt install -y pdk
-  - pdk bundle install
+  - make Gemfile.local
   - bundle exec pdqtest setup
-script: "make"
+script:
+  - make
 rvm:
   - 2.5.1
