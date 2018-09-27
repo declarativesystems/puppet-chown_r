@@ -8,6 +8,9 @@ language: ruby
 services:
   - docker
 cache: bundler
+env:
+  - PUPPET_GEM_VERSION='5.5.3'
+  
 before_install:
   - wget https://apt.puppetlabs.com/puppet5-release-trusty.deb
   - sudo dpkg -i puppet5-release-trusty.deb
