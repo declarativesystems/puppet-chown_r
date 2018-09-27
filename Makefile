@@ -15,6 +15,11 @@ logical: Gemfile.local
 	bundle exec pdqtest rspec
 
 bundle:
+	# Install into _normal world_ bundle
+	bundle install
+	# Don't tell PDK
+	rm Gemfile.lock
+	# Install into _PDK_ bundle - because we re-bundled
 	pdk bundle install
 
 Gemfile.local:
