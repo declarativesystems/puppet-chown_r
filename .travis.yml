@@ -17,8 +17,6 @@ before_install:
   - bundle exec pdqtest setup
   - find vendor/ -iname '*.pp' -exec rm {} \;
 script:
-  - pdk validate --debug metadata,puppet
-#  - find
-#  - make
+  - make
 rvm:
   - 2.5.1
