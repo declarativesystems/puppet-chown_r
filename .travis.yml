@@ -16,7 +16,7 @@ before_install:
   - make Gemfile.local
   - bundle exec pdqtest setup
   - # fix for - https://tickets.puppetlabs.com/browse/PDK-1192
-  - find vendor/ -iname '*.pp' -exec rm {} \;
+  - find vendor -iname '*.pp' -exec rm {} \;
 script:
   - make
 rvm:

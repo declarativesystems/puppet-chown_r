@@ -15,10 +15,10 @@ logical: Gemfile.local
 	bundle exec pdqtest rspec
 
 bundle:
-	# First install into PDK world to get hard to find gems
-	# CAUSES errors... pdk bundle install --no-deployment
-	# Install into _normal world_ bundle
-	bundle install --no-deployment
+	# Obtain puppet 5x and lock
+	pdk bundle install
+	# Install all gems into _normal world_ bundle so we can use all of em
+	bundle install
 
 Gemfile.local:
 	echo "[🐌] Creating symlink and running pdk bundle..."
