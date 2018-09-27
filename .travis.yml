@@ -16,6 +16,7 @@ before_install:
   - make Gemfile.local
   - bundle exec pdqtest setup
 script:
+  - find
   - make
 rvm:
   - 2.5.1
