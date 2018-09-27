@@ -16,7 +16,7 @@ logical: Gemfile.local
 
 bundle:
 	# First install into PDK world to get hard to find gems
-	pdk bundle install --no-deployment
+	# CAUSES errors... pdk bundle install --no-deployment
 	# Install into _normal world_ bundle
 	bundle install --no-deployment
 
