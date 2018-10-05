@@ -1,2 +1,0 @@
-gem 'pdqtest', '~> 1.9.9beta4'
-gem 'puppet-strings'
