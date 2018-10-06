@@ -2,7 +2,8 @@
 # To run locally:
 # https://confluence.atlassian.com/bitbucket/debug-your-pipelines-locally-with-docker-838273569.html
 ---
-image: declarativesystems/pdqtest-ubuntu:2018-09-15-0
+image: declarativesystems/pdqtest-ubuntu:2018-10-06-0
+
 
 pipelines:
   default:
@@ -13,11 +14,6 @@ pipelines:
       - ruby --version
       - gem install bundler
       - bundler --version
-      - curl -O https://apt.puppetlabs.com/puppet5-release-trusty.deb
-      - dpkg -i puppet5-release-trusty.deb
-      - apt-get update
-      - apt install -y pdk
-      - export PATH=/opt/puppetlabs/pdk/bin/:/opt/puppetlabs/puppet/bin:$PATH
       - sh .ci_custom.sh
       - make pdqtestbundle
       - cd .pdqtest && bundle exec pdqtest --inplace --inplace-enable all
