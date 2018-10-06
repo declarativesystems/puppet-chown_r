@@ -4,15 +4,15 @@
 ---
 image: declarativesystems/pdqtest-ubuntu:2018-10-06-0
 
-
 pipelines:
   default:
   - step:
       caches:
       - bundler
       script:
+      - source /etc/profile.d/rvm.sh
       - ruby --version
-      - gem install bundler
+      - which ruby
       - bundler --version
       - sh .ci_custom.sh
       - make pdqtestbundle
@@ -21,3 +21,4 @@ pipelines:
 definitions:
   caches:
     bundler: vendor/bundle
+
