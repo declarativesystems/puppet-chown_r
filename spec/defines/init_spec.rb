@@ -1,20 +1,20 @@
 require 'spec_helper'
-describe 'chown_r', :type => :define do
+describe 'chown_r', type: :define do
   let :facts do
     {
-      "os" => {
-        "family" => "RedHat"
+      'os' => {
+        'family' => 'RedHat'
       }
     }
   end
   context 'with default values for all parameters' do
     let :title do
-      "/tmp/test"
+      '/tmp/test'
     end
     let :params do
       {
-        :want_user  => "root",
-        :want_group => "sys",
+        want_user: 'root',
+        want_group: 'sys'
       }
     end
     it { should compile }
