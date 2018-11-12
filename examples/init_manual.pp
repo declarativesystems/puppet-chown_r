@@ -35,16 +35,16 @@ package { "nmap-ncat":
 
 # chown only if watched package changes
 chown_r { "/foo/bar":
-  want_user   => $want_user,
-  want_group  => $want_group,
-  watch       => Package["nmap-ncat"],
+  want_user  => $want_user,
+  want_group => $want_group,
+  watch      => Package["nmap-ncat"],
 }
 
 
 # chown if needed
 chown_r { $dirs:
-  want_user   => $want_user,
-  want_group  => $want_group,
+  want_user  => $want_user,
+  want_group => $want_group,
 }
 
 chown_r { "/extra":
