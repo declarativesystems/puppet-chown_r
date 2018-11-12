@@ -64,3 +64,11 @@ Do not include this directory when running chmod
 
 Default value: `undef`
 
+##### `options`
+
+Data type: `Optional[String]`
+
+Additional options to pass to the `chown` or `chgrp` command
+
+Default value: "--no-dereference"
+

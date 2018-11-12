@@ -72,3 +72,17 @@
 @test "/tmp/foo/skipdir/skipfile not descended group" {
   [[ $(stat -c %G /tmp/foo/skipdir/skipfile) == "bob" ]]
 }
+
+@test "/var/symlink maintains user ownership" {
+  [[ $(stat -c %U /var/symlink) == "root" ]]
+}
+@test "/var/symlink maintains group ownership" {
+  [[ $(stat -c %G /var/symlink) == "root" ]]
+}
+
+@test "/tmp/foo/symlink fixed user ownership" {
+  [[ $(stat -c %U /tmp/foo/symlink) == "nobody" ]]
+}
+@test "/tmp/foo/symlink fixed group ownership" {
+  [[ $(stat -c %G /tmp/foo/symlink) == "charles" ]]
+}

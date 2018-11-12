@@ -15,12 +15,14 @@
 #   the chown command will run every time find tells us we need to (eg
 #   up to every puppet run)
 # @param skip Do not include this directory when running chmod
+# @param options Additional options to pass to the `chown` or `chgrp` command
 define chown_r(
-  Optional[String]                                          $want_user    = undef,
-  Optional[String]                                          $want_group   = undef,
-  String                                                    $dir          = $name,
-  Optional[Variant[Type[Resource], Array[Type[Resource]]]]  $watch        = undef,
-  Optional[String]                                          $skip         = undef,
+  Optional[String]                                          $want_user  = undef,
+  Optional[String]                                          $want_group = undef,
+  String                                                    $dir        = $name,
+  Optional[Variant[Type[Resource], Array[Type[Resource]]]]  $watch      = undef,
+  Optional[String]                                          $skip       = undef,
+  Optional[String]                                          $options    = "--no-dereference",
 ) {
 
   if $watch {
@@ -60,13 +62,13 @@ define chown_r(
 
   if $want_user and $want_group {
     $want_both = $or_pred
-    $cmd = "chown ${want_user}:${want_group}"
+    $cmd = "chown ${options} ${want_user}:${want_group}"
   } elsif $want_user {
     $want_both = ""
-    $cmd = "chown ${want_user}"
+    $cmd = "chown ${options} ${want_user}"
   } elsif $want_group {
     $want_both = ""
-    $cmd = "chgrp ${want_group}"
+    $cmd = "chgrp ${options} ${want_group}"
   } else {
     fail("One of want_user or want_group must be specified")
   }

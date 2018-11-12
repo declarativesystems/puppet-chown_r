@@ -42,3 +42,11 @@
 @test "/tmp/foo/skipdir/skipfile default owner" {
   [[ $(stat -c %U /tmp/foo/skipdir/skipfile) == "bob" ]]
 }
+
+
+@test "/var/symlink initial group" {
+  [[ $(stat -c %G /var/symlink) == "root" ]]
+}
+@test "/var/symlink initial user" {
+  [[ $(stat -c %U /var/symlink) == "root" ]]
+}

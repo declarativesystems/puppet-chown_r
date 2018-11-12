@@ -16,3 +16,5 @@ mkdir /tmp/foo/skipdir
 chown bob:bob /tmp/foo/skipdir
 touch /tmp/foo/skipdir/skipfile
 chown bob:bob /tmp/foo/skipdir/skipfile
+touch /var/symlink
+ln -s /var/symlink /tmp/foo/symlink
