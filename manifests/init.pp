@@ -22,7 +22,7 @@ define chown_r(
   String                                                    $dir        = $name,
   Optional[Variant[Type[Resource], Array[Type[Resource]]]]  $watch      = undef,
   Optional[String]                                          $skip       = undef,
-  Optional[String]                                          $options    = "--no-dereference",
+  Optional[String]                                          $options    = "-h",
 ) {
 
   if $watch {

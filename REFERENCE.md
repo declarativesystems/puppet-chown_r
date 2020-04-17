@@ -70,5 +70,5 @@ Data type: `Optional[String]`
 
 Additional options to pass to the `chown` or `chgrp` command
 
-Default value: "--no-dereference"
+Default value: "-h"
 
