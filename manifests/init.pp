@@ -83,6 +83,7 @@ define chown_r(
     path        => [
       "/bin",
       "/usr/bin",
+      "/usr/sbin",
     ],
   }
 
