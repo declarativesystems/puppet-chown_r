@@ -11,8 +11,8 @@ appveyor.yml:
   - refresh.ps1
 ".gitattributes":
   include:
-  - "*.epp eol=lf"
-  - "*.json eol=lf"
-  - "*.yaml eol=lf"
-  - "*.yml eol=lf"
-  - "*.md eol=lf"
+    "*.epp": eol=lf
+    "*.json": eol=lf
+    "*.yaml": eol=lf
+    "*.yml": eol=lf
+    "*.md": eol=lf
