@@ -76,7 +76,7 @@ define chown_r(
   # change ownership if find matches any files or directories with different
   # ownership to $want_user or $want_group
   exec { "chown -R for ${dir}":
-    command     => "find ${dir} ${_skip} -exec ${cmd} {} \\;",
+    command     => "find ${dir} ${_skip} \\( ${_want_user} ${want_both} ${_want_group} \\) -exec ${cmd} {} \\;",
     refreshonly => $refreshonly,
     onlyif      => "find ${dir} ${_skip} \\( ${_want_user} ${want_both} ${_want_group} \\) -print | grep .",
     subscribe   => $_watch,
